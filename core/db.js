@@ -10,13 +10,25 @@ const {
 
 
 const sequelize=new Sequelize(dbName,user,password,{
-    dialecct:'mysql',//指定数据库类型
+    dialect:'mysql',//指定数据库类型
     host,
     port,
-    logging:true,//显示sql操作
+    logging:false,//显示sql操作
     timezone:'+08:00',//时区 北京时间
     define:{
-
+        //create_time update_time delete_time
+        timestamps:true,
+        paranoid:true,
+        createdAt:'created_at',
+        updateAt:'update_at',
+        updateAt:'update_at',
+        deletedAt:'deleted_at',
+        underscored:true//驼峰转下划线
     }
 })
-module.exports={sequelize}
+sequelize.sync({
+    force:true
+})
+module.exports={
+    sequelize
+}

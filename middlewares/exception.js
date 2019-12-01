@@ -15,12 +15,14 @@ const catchError=async (ctx,next)=> {
       await next()
    }
    catch (error) {
-      if(global.config.environment==='dev'){
+      const isHttpException=error instanceof HttpException
+      const isDev=global.config.environment==='dev'
+      if(isDev && !isHttpException){
          throw error//开发环境需要错误提示信息 ，生产环境不需要
       }
 
       //已知错误 有error_code
-      if(error instanceof HttpException ){
+      if(isHttpException){
          ctx.body={
             msg:error.msg,
             error_code:error.errorCode,//为兼容壹仟python接口，使用下划线命名
