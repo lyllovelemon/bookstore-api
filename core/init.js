@@ -5,6 +5,13 @@ class InitManager {
         //入口方法
         InitManager.app=app;
         InitManager.initLoadRouters()
+        InitManager.loadHttpException()
+        InitManager.loadConfig()
+    }
+    static loadConfig(path=''){
+        const configPath=path||process.cwd()+'/config/config.js'
+        const config=require(configPath)
+        global.config=config
     }
     static initLoadRouters(){
         //process.cwd() 根目录绝对路径=> 'D:\\work\\git\\island'
@@ -18,5 +25,9 @@ class InitManager {
             }
         }
     }
+    static loadHttpException(){
+        const errors=require('../core/http-exception')
+        global.errs=errors
+    }
 }
-module.exports=InitManager;
+module.exports=InitManager
