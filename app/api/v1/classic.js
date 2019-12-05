@@ -1,22 +1,11 @@
 const Router=require('koa-router')
-const router=new Router();
+const router=new Router({
+    prefix:'/v1/classic'
+});
 const {PostiveIntegerValidator}=require('../../validators/validator')
-router.post('/v1/:id/classic/latest',async (ctx,next)=>{
-    const path=ctx.param
-    const query=ctx.request.query
-    const header=ctx.request.header
-    const body=ctx.request.body
-    const v=await new PostiveIntegerValidator();
-    v.validate(ctx)
-    const id=v.get('path.id',parsed=false)
-    // if(!query){
-    //     const error=new global.errs.ParameterException()
-    //     error.requestUrl=`${ctx.method} ${ctx.path}`
-    //     throw error
-    // }
-    ctx.body={
-        key:'classic'
-    }
-    throw new Error('API Exception')
+const {Auth}=require('../../../middlewares/auth')
+
+router.get('/latest',new Auth(9).m,async (ctx,next)=>{
+    ctx.body=ctx.auth.uid
 });
 module.exports=router

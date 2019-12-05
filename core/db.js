@@ -19,15 +19,14 @@ const sequelize=new Sequelize(dbName,user,password,{
         //create_time update_time delete_time
         timestamps:true,
         paranoid:true,
-        createdAt:'created_at',
-        updateAt:'update_at',
-        updateAt:'update_at',
-        deletedAt:'deleted_at',
+        // createdAt:'created_at',
+        // updateAt:'update_at',
+        // deletedAt:'deleted_at',
         underscored:true//驼峰转下划线
     }
 })
 sequelize.sync({
-    force:true
+    force:false
 })
 module.exports={
     sequelize
