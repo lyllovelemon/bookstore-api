@@ -1,5 +1,5 @@
 const Router=require('koa-router')
-const {TokenValidator}=require('../../validators/validator')
+const {TokenValidator, NotEmptyValidator}=require('../../validators/validator')
 const {LoginType}=require('../../lib/enum')
 const {User}=require('../../models/user')
 const {generateToken}=require('../../../core/util')
@@ -24,6 +24,13 @@ router.post('/',async(ctx)=>{
             break;
         default:
             throw new global.errs.ParameterException('没有相应的处理函数')
+    }
+})
+router.post('/verify',async (ctx)=>{
+const v=await new NotEmptyValidator().validate(ctx)
+    const result=Auth.verifyToken(v.get('body.token'))
+    ctx.body={
+        result:true
     }
 })
 async function emailLogin(account,secret){

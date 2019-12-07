@@ -17,7 +17,7 @@ class Auth {
                 throw new global.errs.Forbidden(errMsg)
             }
             try{
-                var decode=jwt.verify(userToken.name,global.config.security.secretKey,)
+                var decode=jwt.verify(userToken.name,global.config.security.secretKey)
             }
             catch (error) {
                 //1.token不合法
@@ -39,6 +39,16 @@ class Auth {
             }
             await next()
         }
+    }
+    static verifyToken(token){
+        try{
+            jwt.verify(token,global.config.security.secretKey)
+            return  true
+        }
+        catch (error) {
+            return false
+        }
+
     }
 }
 module.exports={

@@ -13,7 +13,7 @@ class WxManager {
             throw new global.errs.AuthFailed('openId获取失败')
         }
         const errCode=result.data.errcode
-        if(errCode!==0){
+        if(errCode&&errCode!==0){
             throw new global.errs.AuthFailed('openId获取失败'+errCode)
         }
         let user=await User.getUserByOpenid(result.data.openid)
