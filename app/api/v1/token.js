@@ -30,7 +30,7 @@ router.post('/verify',async (ctx)=>{
 const v=await new NotEmptyValidator().validate(ctx)
     const result=Auth.verifyToken(v.get('body.token'))
     ctx.body={
-        result:true
+        is_valid:result
     }
 })
 async function emailLogin(account,secret){
