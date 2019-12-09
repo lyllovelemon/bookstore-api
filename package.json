@@ -38,6 +38,7 @@
   "devDependencies": {},
   "_moduleAlias": {
     "@root": ".",
-    "@models": "app/models"
+    "@models": "app/models",
+    "@validator": "app/validators/validator.js"
   }
 }
