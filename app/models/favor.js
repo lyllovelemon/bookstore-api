@@ -47,6 +47,16 @@ class Favor extends Model{
             await art.decrement('fav_nums',{by:1,transaction:t})//-1操作
         })
     }
+    static async userLikeIt(art_id,type,uid){
+        const favor=await Favor.findOne({
+            where:{
+                uid,
+                art_id,
+                type
+            }
+        })
+        return !!favor
+    }
 }
 Favor.init({
     uid:Sequelize.INTEGER,
