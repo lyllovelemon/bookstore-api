@@ -17,17 +17,36 @@ class Favor extends Model{
         if(favor){
             return new global.errs.LikeError()
         }
-        await sequelize.transaction(async t=>{
+        return await sequelize.transaction(async t=>{
             Favor.create({
                 art_id,
                 type,
                 uid
             },{transaction:t})
-            const art=Art.getData(art_id,type)
+            const art=await Art.getData(art_id,type)
             await art.increment('fav_nums',{by:1,transaction:t})//+1操作
         })
     }
-    static async dislike(art_id,type,uid){}
+    static async dislike(art_id,type,uid){
+        const noFavor=await Favor.findOne({
+            where:{
+                art_id,
+                type,
+                uid
+            }
+        })
+        if(!noFavor){
+            return new global.errs.DislikeError()
+        }
+        return await sequelize.transaction(async t=>{
+            await noFavor.destroy({
+                force:true,//false-软删除 true-硬删除
+                transaction:t
+            })
+            const art=await Art.getData(art_id,type)
+            await art.decrement('fav_nums',{by:1,transaction:t})//-1操作
+        })
+    }
 }
 Favor.init({
     uid:Sequelize.INTEGER,
