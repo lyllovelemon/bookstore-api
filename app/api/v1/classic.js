@@ -67,7 +67,7 @@ router.get('/:index/previous',new Auth().m,async (ctx,next)=>{
 router.get('/:type/:id/favor',new Auth().m,async (ctx,next)=>{
   const v=await new  ClassicValidator().validate(ctx)
     const id=v.get('path.id')
-    const type=v.get('path.type')
+    const type=parseInt(v.get('path.type'))
     const art=await Art.getData(id,type)//获取fav_nums
     if(!art){
         throw new global.errs.NotFound()
@@ -77,5 +77,10 @@ router.get('/:type/:id/favor',new Auth().m,async (ctx,next)=>{
         fav_nums: art.fav_nums,
         like_status:like
     }
+})
+//查询某用户的点赞期刊
+router.get('/favor',new Auth().m,async (ctx,next)=>{
+    const uid=ctx.auth.uid
+
 })
 module.exports=router
