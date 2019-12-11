@@ -69,6 +69,7 @@ class Favor extends Model{
         if(!arts){
             throw new global.errs.NotFound()
         }
+        return await Art.getList(arts)
     }
 }
 Favor.init({

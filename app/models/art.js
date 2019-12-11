@@ -1,6 +1,7 @@
 //flow查询具体类型js
 const {Movie,Sentence,Music}=require('./classic')
 const {Op}=require('sequelize')
+const {flatten}=require('lodash')
 class Art {
     static async getList(artInfoList){
         const artInfoObj={
@@ -12,14 +13,16 @@ class Art {
             //artInfo.type  artInfo.art_id
             artInfoObj[artInfo.type].push(artInfo.art_id)
         }
+        let arts=[]
         for(let key in artInfoObj){
             const ids=artInfoObj[key]
             if(ids.length===0){
                 continue
             }
             key=parseInt(key)
-            Art._getListByType(artInfoObj[key],key)
+            arts.push(await Art._getListByType(artInfoObj[key],key))
         }
+        return flatten(arts)
     }
     static async _getListByType(ids,type){
         let arts=null

@@ -81,6 +81,6 @@ router.get('/:type/:id/favor',new Auth().m,async (ctx,next)=>{
 //查询某用户的点赞期刊
 router.get('/favor',new Auth().m,async (ctx,next)=>{
     const uid=ctx.auth.uid
-
+    ctx.body=await Favor.getMyClassicFavors(uid)
 })
 module.exports=router
