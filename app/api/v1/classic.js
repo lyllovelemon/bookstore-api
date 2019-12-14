@@ -83,4 +83,16 @@ router.get('/favor',new Auth().m,async (ctx,next)=>{
     const uid=ctx.auth.uid
     ctx.body=await Favor.getMyClassicFavors(uid)
 })
+//获取期刊详情
+router.get('/:type/:id',new Auth().m,async (ctx,next)=>{
+    const v=await new  ClassicValidator().validate(ctx)
+    const id=v.get('path.id')
+    const type=parseInt(v.get('path.type'))
+
+    const artDetail=await new Art(id,type).getDetail(ctx.auth.uid)
+    ctx.body={
+        art:artDetail.art,
+        like_status:artDetail.like_status
+    }
+})
 module.exports=router

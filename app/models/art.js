@@ -1,8 +1,25 @@
 //flow查询具体类型js
+const {Favor}=require('./favor')
 const {Movie,Sentence,Music}=require('./classic')
 const {Op}=require('sequelize')
 const {flatten}=require('lodash')
 class Art {
+    constructor(art_id,type){
+        this.art_id=art_id
+        this.type=type
+    }
+    async getDetail(uid){
+        const art=await Art.getData(this.art_id,this.type)//获取fav_nums
+        if(!art){
+            throw new global.errs.NotFound()
+        }
+        let like=await Favor.userLikeIt(this.art_id,this.type,uid)//获取like_status
+        art.setDataValue('like_status',like)
+        return  {
+            art,
+            like_status:like
+        }
+    }
     static async getList(artInfoList){
         const artInfoObj={
             100:[],
