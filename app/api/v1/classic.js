@@ -68,14 +68,16 @@ router.get('/:type/:id/favor',new Auth().m,async (ctx,next)=>{
   const v=await new  ClassicValidator().validate(ctx)
     const id=v.get('path.id')
     const type=parseInt(v.get('path.type'))
-    const art=await Art.getData(id,type)//获取fav_nums
-    if(!art){
-        throw new global.errs.NotFound()
-    }
-    let like=await Favor.userLikeIt(id,type,ctx.auth.uid)//获取like_status
+    const artDetail=await new Art(id,type).getDetail(ctx.auth.uid)
+    //artDetail.art.setDataValue('like_status',artDetail.like_status)
+    // const art=await Art.getData(id,type)//获取fav_nums
+    // if(!art){
+    //     throw new global.errs.NotFound()
+    // }
+    // let like=await Favor.userLikeIt(id,type,ctx.auth.uid)//获取like_status
     ctx.body={
-        fav_nums: art.fav_nums,
-        like_status:like
+        fav_nums: artDetail.art.fav_nums,
+        like_status:artDetail.like_status
     }
 })
 //查询某用户的点赞期刊
@@ -90,9 +92,7 @@ router.get('/:type/:id',new Auth().m,async (ctx,next)=>{
     const type=parseInt(v.get('path.type'))
 
     const artDetail=await new Art(id,type).getDetail(ctx.auth.uid)
-    ctx.body={
-        art:artDetail.art,
-        like_status:artDetail.like_status
-    }
+    artDetail.art.setDataValue('like_status',artDetail.like_status)
+    ctx.body=artDetail.art
 })
 module.exports=router
