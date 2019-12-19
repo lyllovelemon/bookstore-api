@@ -2,6 +2,7 @@ const Router=require('koa-router')
 const {HotBook}=require('@models/hot-book')
 const {Book}=require('@models/book')
 const {PositiveIntegerValidator,SearchValidator}=require('@validator')
+const {Auth}=require('../../../middlewares/auth')
 const router=new Router({
     prefix:'/v1/book'
 });
@@ -27,5 +28,17 @@ router.get('/search',async ctx=>{
     const v=await new SearchValidator().validate(ctx)
     const result=await Book.searchFromYushu(v.get('query.q'),v.get('query.start'),v.get('query.count'))
     ctx.body=result
+})
+//获取我喜欢书籍数量
+router.get('/favor/count',new Auth().m,async ctx=>{
+  const result=await Book.getMyFavorBookCount(ctx.auth.uid)
+    ctx.body=result
+})
+//获取书籍点赞情况
+router.get('/:book_id/favor',new Auth().m,async ctx=>{
+    const v=await new PositiveIntegerValidator().validate(ctx, {
+        id:'book_id'
+        })
+
 })
 module.exports=router
