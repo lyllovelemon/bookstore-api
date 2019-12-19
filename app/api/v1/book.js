@@ -1,7 +1,7 @@
 const Router=require('koa-router')
 const {HotBook}=require('@models/hot-book')
 const {Book}=require('@models/book')
-const {PositiveIntegerValidator}=require('@validator')
+const {PositiveIntegerValidator,SearchValidator}=require('@validator')
 const router=new Router({
     prefix:'/v1/book'
 });
@@ -22,4 +22,10 @@ router.get('/:id/detail',async(ctx,next)=>{
 router.get('/v1/book/latest',(ctx,next)=>{
     ctx.body={key:'book'}
 });
+//查找书籍
+router.get('/search',async ctx=>{
+    const v=await new SearchValidator().validate(ctx)
+    const result=await Book.searchFromYushu(v.get('query.q'),v.get('query.start'),v.get('query.count'))
+    ctx.body=result
+})
 module.exports=router

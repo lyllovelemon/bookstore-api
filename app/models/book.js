@@ -12,6 +12,12 @@ class Book extends Model{
         const detail=axios.get(url)
         return detail.data
     }
+    //summary 是否展示概要信息 1-概要 2-详细
+    static async searchFromYushu(q,start,count,summary=1){
+        const url=util.format(global.config.yushu.keywordUrl,encodeURI(q),start,count,summary)
+        const result=await axios.get(url)
+        return result.data
+    }
 }
 Book.init({
     id:{
