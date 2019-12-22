@@ -13,9 +13,8 @@ const router=new Router({
 //获取热门书籍
 router.get('/hot_list',async(ctx,next)=>{
     const books=await HotBook.getAll()
-    ctx.body={
-       books
-    }
+    ctx.body=books
+
 })
 //查询书籍详情
 router.get('/:id/detail',async(ctx,next)=>{

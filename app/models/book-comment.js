@@ -32,6 +32,12 @@ class Comment extends Model{
         })
         return comments
     }
+    // toJson(){
+    //     return {
+    //         content:this.getDataValue('content'),
+    //         nums:this.getDataValue('nums')
+    //     }
+    // }
 }
 Comment.init({
     content:Sequelize.STRING(12),
