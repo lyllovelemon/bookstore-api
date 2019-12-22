@@ -24,6 +24,14 @@ class Comment extends Model{
           })
         }
     }
+    static async getComment(bookId){
+        const comments=await Comment.findAll({
+            where:{
+                book_id:bookId
+            }
+        })
+        return comments
+    }
 }
 Comment.init({
     content:Sequelize.STRING(12),

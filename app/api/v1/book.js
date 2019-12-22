@@ -54,4 +54,19 @@ router.post('/add/short_comment',new Auth().m,async ctx=>{
     await Comment.addComment(v.get('body.book_id'),v.get('body.content'))
     success()
 })
+//获取短评
+router.get('/:book_id/short_comment',new Auth().m,async ctx=>{
+    const v=new PositiveIntegerValidator().validate(ctx,{
+        id:'book_id'
+    })
+    const book=await Comment.getComment(v.get('path.book_id'));
+    ctx.body=book
+})
+//获取热评关键词
+router.get('/hot_keyword',new Auth().m,async ctx=>{
+    ctx.body= {
+        'hot': ['Python','哈利波特','村上春树','东野圭吾','白夜行','韩寒','金庸',
+        '王小波']
+    }
+})
 module.exports=router
