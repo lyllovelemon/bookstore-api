@@ -40,6 +40,14 @@ Model.prototype.toJson=function(){
     unset(data,'updated_at')
     unset(data,'created_at')
     unset(data,'deleted_at')
+    for(key in data){
+        if(data[key]==='image'){
+            if(!data[key].startsWith('http')){
+                data[key]=global.config.host+data[key]
+            }
+
+        }
+    }
     if(isArray(this.exclude)){
         this.exclude.forEach((value)=>{
             unset(data,value)

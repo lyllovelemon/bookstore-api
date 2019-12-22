@@ -19,8 +19,8 @@ router.get('/hot_list',async(ctx,next)=>{
 //查询书籍详情
 router.get('/:id/detail',async(ctx,next)=>{
     const v=await new PositiveIntegerValidator().validate(ctx)
-    const book=new Book(v.get('path.id'))
-    ctx.body=await book.detail()
+    const book=new Book()
+    ctx.body=await book.detail(v.get('path.id'))
 })
 router.get('/v1/book/latest',(ctx,next)=>{
     ctx.body={key:'book'}
@@ -58,8 +58,12 @@ router.get('/:book_id/short_comment',new Auth().m,async ctx=>{
     const v=new PositiveIntegerValidator().validate(ctx,{
         id:'book_id'
     })
-    const book=await Comment.getComment(v.get('path.book_id'));
-    ctx.body=book
+    const book_id=v.get('path.book_id')
+    const comments=await Comment.getComment(book_id);
+    ctx.body={
+        comments,
+        book_id
+    }
 })
 //获取热评关键词
 router.get('/hot_keyword',new Auth().m,async ctx=>{

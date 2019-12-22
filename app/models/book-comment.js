@@ -1,9 +1,6 @@
 const {sequelize}=require('../../core/db')
 const {Sequelize,Model}=require('sequelize')
 class Comment extends Model{
-    constructor(){
-        super()
-    }
     static async addComment(bookId,content){
         const comment=await Comment.findOne({
             where:{

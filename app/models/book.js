@@ -4,11 +4,11 @@ const axios=require('axios')
 const util=require('util')
 const {Favor}=require('./favor')
 class Book extends Model{
-    constructor(id){
-        super()
-        this.id=id
-    }
-    async detail(){
+    // constructor(id){
+    //     super()
+    //     this.id=id
+    // }
+    async detail(id){
         const url=util.format(global.config.yushu.detailUrl,id)
         const detail=axios.get(url)
         return detail.data
