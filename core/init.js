@@ -14,7 +14,7 @@ class InitManager {
         global.config=config
     }
     static initLoadRouters(){
-        //process.cwd() 根目录绝对路径=> 'D:\\work\\git\\island'
+        //process.cwd() 根目录绝对路径=> 'D:\\work\\git\\bookstore-api'
         const apiDirectory=`${process.cwd()}/app/api`
 
         requireDirectory(module,apiDirectory,{visit:whenLoadModule})
